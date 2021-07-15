@@ -111,6 +111,31 @@ button.addEventListener("click",function(e){
       entries_array[i]=entry;
       
      }
-     console.log(entries_array);
+     //console.log(entries_array);
+     //console.log(entries_array[0].response.headers["last-modified"]);
+     json_entries={entries_array};
+     let btn = document.createElement("input");
+      btn.className = "btn btn-success";
+      btn.type = "submit";
+      btn.id = "dbutton";
+      btn.value= "Download";
+      function download(filename, text) {
+        var element = document.createElement('a');
+        element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
+        element.setAttribute('download', filename);
+    
+        element.style.display = 'none';
+        document.body.appendChild(element);
+    
+        element.click();
+    
+        document.body.removeChild(element);
+      }
+      btn.addEventListener("click", function () {
+        data=JSON.stringify(json_entries,null,"\t");
+       download("filtered_file.har", data);
+      });
+     document.getElementById("downloadbutton").appendChild(btn);
+     
     }
 },false)
