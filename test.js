@@ -21,32 +21,32 @@ button.addEventListener("click",function(e){
       entry["request"]["url"]=d1.log.entries[i].request.url.match(/(?:[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?\.)+[a-z0-9][a-z0-9-]{0,61}[a-z0-9]/);
       //Request Headers
       entry["request"]["headers"]={};
-      if(d1.log.entries[i].request.headers.some(element=>element.name==="Content-Type")){
-        let index= d1.log.entries[i].request.headers.find(element=>element.name=="Content-Type");
+      if(d1.log.entries[i].request.headers.some(element=>element.name.toLowerCase()==="content-type")){
+        let index= d1.log.entries[i].request.headers.find(element=>element.name.toLowerCase()=="content-type");
         entry["request"]["headers"]["content-type"]=index.value;
       }
       else
       {
         entry["request"]["headers"]["content-type"]="empty";
       }
-      if(d1.log.entries[i].request.headers.some(element=>element.name==="Cache-Control")){
-        let index = d1.log.entries[i].request.headers.find(element=>element.name=="Cache-Control");
+      if(d1.log.entries[i].request.headers.some(element=>element.name.toLowerCase()==="cache-control")){
+        let index = d1.log.entries[i].request.headers.find(element=>element.name.toLowerCase()=="cache-control");
         entry["request"]["headers"]["cache-control"]=index.value;
       }
       else
       {
         entry["request"]["headers"]["cache-control"]="empty";
       }
-      if(d1.log.entries[i].request.headers.some(element=>element.name==="Pragma")){
-        let index = d1.log.entries[i].request.headers.find(element=>element.name=="Pragma");
+      if(d1.log.entries[i].request.headers.some(element=>element.name.toLowerCase()==="pragma")){
+        let index = d1.log.entries[i].request.headers.find(element=>element.name.toLowerCase()=="pragma");
         entry["request"]["headers"]["pragma"]= index.value;
       }
       else
       {
         entry["request"]["headers"]["pragma"]="empty";
       }
-      if(d1.log.entries[i].request.headers.some(element=>element.name==="Host")){
-        let index = d1.log.entries[i].request.headers.find(element=>element.name=="Host");
+      if(d1.log.entries[i].request.headers.some(element=>element.name.toLowerCase()==="host")){
+        let index = d1.log.entries[i].request.headers.find(element=>element.name.toLowerCase()=="host");
         entry["request"]["headers"]["host"] = index.value;
       }
       else
@@ -59,48 +59,48 @@ button.addEventListener("click",function(e){
       entry["response"]["statusText"]=d1.log.entries[i].response.statusText;
       //Response Headers
       entry["response"]["headers"]={};
-      if(d1.log.entries[i].response.headers.some(element=>element.name==="Content-Type")){
-        let index = d1.log.entries[i].response.headers.find(element=>element.name=="Content-Type");
+      if(d1.log.entries[i].response.headers.some(element=>element.name.toLowerCase()==="content-type")){
+        let index = d1.log.entries[i].response.headers.find(element=>element.name.toLowerCase()=="content-type");
         entry["response"]["headers"]["content-type"]=index.value;
       }
       else
       {
         entry["response"]["headers"]["content-type"]="empty";
       }
-      if(d1.log.entries[i].response.headers.some(element=>element.name==="Cache-Control")){
-        let index = d1.log.entries[i].response.headers.find(element=>element.name=="Cache-Control");
+      if(d1.log.entries[i].response.headers.some(element=>element.name.toLowerCase()==="cache-control")){
+        let index = d1.log.entries[i].response.headers.find(element=>element.name.toLowerCase()=="cache-control");
         entry["response"]["headers"]["cache-control"]=index.value;
       }
       else
       {
         entry["response"]["headers"]["cache-control"]="empty";
       }
-      if(d1.log.entries[i].response.headers.some(element=>element.name==="Pragma")){
-        let index = d1.log.entries[i].response.headers.find(element=>element.name=="Pragma");
+      if(d1.log.entries[i].response.headers.some(element=>element.name.toLowerCase()==="pragma")){
+        let index = d1.log.entries[i].response.headers.find(element=>element.name.toLowerCase()=="pragma");
         entry["response"]["headers"]["pragma"]=index.value;
       }
       else
       {
         entry["response"]["headers"]["pragma"]="empty";
       }
-      if(d1.log.entries[i].response.headers.some(element=>element.name==="Expires")){
-        let index = d1.log.entries[i].response.headers.find(element=>element.name=="Expires");
+      if(d1.log.entries[i].response.headers.some(element=>element.name.toLowerCase()==="expires")){
+        let index = d1.log.entries[i].response.headers.find(element=>element.name.toLowerCase()=="expires");
         entry["response"]["headers"]["expires"]=index.value;
       }
       else
       {
         entry["response"]["headers"]["expires"]="empty";
       }
-      if(d1.log.entries[i].response.headers.some(element=>element.name==="Age")){
-        let index = d1.log.entries[i].response.headers.find(element=>element.name=="Age");
+      if(d1.log.entries[i].response.headers.some(element=>element.name.toLowerCase()==="age")){
+        let index = d1.log.entries[i].response.headers.find(element=>element.name.toLowerCase()=="age");
         entry["response"]["headers"]["age"]=index.value;
       }
       else
       {
         entry["response"]["headers"]["age"]="empty";
       }
-      if(d1.log.entries[i].response.headers.some(element=>element.name==="Last-Modified")){
-        let index = d1.log.entries[i].response.headers.find(element=>element.name=="Last-Modified");
+      if(d1.log.entries[i].response.headers.some(element=>element.name.toLowerCase()==="last-modified")){
+        let index = d1.log.entries[i].response.headers.find(element=>element.name.toLowerCase()=="last-modified");
         entry["response"]["headers"]["last-modified"]=index.value;
       }
       else
@@ -111,9 +111,10 @@ button.addEventListener("click",function(e){
       entries_array[i]=entry;
       
      }
-     //console.log(entries_array);
+     console.log(entries_array);
      //console.log(entries_array[0].response.headers["last-modified"]);
      json_entries={entries_array};
+     if(!document.querySelector('input[id="dbutton"]')){
      let btn = document.createElement("input");
       btn.className = "btn btn-success";
       btn.type = "submit";
@@ -136,6 +137,6 @@ button.addEventListener("click",function(e){
        download("filtered_file.har", data);
       });
      document.getElementById("downloadbutton").appendChild(btn);
-     
     }
+  }
 },false)
