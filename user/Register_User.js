@@ -5,7 +5,7 @@ $(function () {
     
     $.ajax({
       type: 'POST',
-      url: 'process.php',
+      url: 'Register.php',
       data: $('#registration').serialize(),
       success: function (data) {
         console.log(data)
