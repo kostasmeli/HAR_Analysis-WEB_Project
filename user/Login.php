@@ -2,9 +2,11 @@
 $username= $_POST['username'];
 $password= $_POST['password'];
 
-require_once "D:\meli_files\meli\Project_web_2021\config.php";
+define('__ROOT__', dirname(dirname(__FILE__)));
+require_once(__ROOT__.'/config.php');
+
 if(empty($username_error) && empty($password_error)){    
-  $sql = "SELECT  username,password FROM user WHERE username = ?";
+  $sql = "SELECT  username,password FROM user WHERE username = ? AND isAdmin=0";
   if($stmt_user = mysqli_prepare($conn,$sql)){
     mysqli_stmt_bind_param($stmt_user,"s",$param_username);
     $param_username = $username;
