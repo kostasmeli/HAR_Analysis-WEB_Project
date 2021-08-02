@@ -1,13 +1,10 @@
 <?php
+define('__ROOT__', dirname(dirname(__FILE__)));
+require_once(__ROOT__.'/config.php');
+
 $username= $_POST['username'];
 $password= $_POST['password'];
 $email=    $_POST['email'];
-echo $email,"\n";
-echo $password,"\n";
-echo $username,"\n";
-
-define('__ROOT__', dirname(dirname(__FILE__)));
-require_once(__ROOT__.'/config.php');
 
 $sql = "INSERT INTO user (username, password,email,isAdmin) VALUES (?, ?, ?,False)";
 if($stmt = mysqli_prepare($conn, $sql)){
@@ -18,10 +15,9 @@ if($stmt = mysqli_prepare($conn, $sql)){
  mysqli_stmt_bind_param($stmt, 'sss', $param_username,$param_password,$param_email);
  if(mysqli_stmt_execute($stmt)){
    echo"success";
-	//header("location: LoginFull.php");
 	}
 	else{
-	echo"something went wrong";
+	echo"error";
 	}
 	mysqli_stmt_close($stmt);
 }

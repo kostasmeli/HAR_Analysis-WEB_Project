@@ -1,11 +1,13 @@
 $(function () {
-  /*$.ajax({
+  sessioncheck=$.ajax({
     type:'GET',
-    url:'SessionCheck.php',
-    success:function(){
-      
+    url:'Session_User.php',
+  });
+  sessioncheck.done(function(response,textStatus,jqXHR){
+    if(response=="session_user_true"){
+      window.location.href = "User_Index.html";
     }
-  }); */
+  }); 
   $('#login').on('submit', function (e) {
     e.preventDefault();
     serializedData=$('#login').serialize();
