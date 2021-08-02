@@ -10,9 +10,19 @@ $(function () {
       data: serializedData
      });
      request.done(function(response,textStatus,jqXHR){
-       console.log("You Registered the Admin")
-       console.log(response)
-       
+       if(response=="success"){
+        console.log("You Registered the Admin")
+        $("#error_msg").text("Registered Successfully,You will be redirected to the login page")
+        setTimeout(function(){
+          $("#error_msg").text("");
+          window.location.href = "Login_Admin.html";
+         },5*1000);
+       }
+       else if (response=="error"){
+        $("#error_msg").text("Username already exists");
+        setTimeout( function(){$("#error_msg").text("")},5*1000);
+       }
+       else console.log(response)
      });
      request.fail(function (jqXHR, textStatus, errorThrown){
       console.error(
