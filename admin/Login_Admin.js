@@ -29,6 +29,7 @@ $(function () {
       else if (response=="wrong_password"){
        $("#error_msg").text("Wrong Password, Try again");
        setTimeout( function(){$("#error_msg").text("")},5*1000);
+       $("#password").val("");
       }
       else if(response=="wrong_username"){
        $("#error_msg").text("Wrong Username, Try again");

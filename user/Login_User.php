@@ -4,8 +4,10 @@ $password= $_POST['password'];
 
 define('__ROOT__', dirname(dirname(__FILE__)));
 require_once(__ROOT__.'/config.php');
+
+
   
- $sql = "SELECT  username,password FROM user WHERE username = ? AND isAdmin=0";
+$sql = "SELECT  username,password FROM user WHERE username = ? AND isAdmin=0";
 if($stmt_user = mysqli_prepare($conn,$sql)){
    mysqli_stmt_bind_param($stmt_user,"s",$param_username);
    $param_username = $username;
