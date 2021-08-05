@@ -5,6 +5,7 @@ session_start();
 $old_password=$_POST['old_password'];
 $new_password= $_POST['new_password'];
 
+//βρες τον κωδικό του χρήστη
 $sql = "SELECT password FROM user WHERE username = ?  AND isAdmin=0";
 if($stmt_user = mysqli_prepare($conn,$sql)){
    mysqli_stmt_bind_param($stmt_user,"s",$param_username);
@@ -21,28 +22,30 @@ if($stmt_user = mysqli_prepare($conn,$sql)){
   mysqli_stmt_close($stmt_user);
 }    
 
-
-$sql = "UPDATE user SET password = ? WHERE username= ? AND password= ? AND isAdmin=0";  
+if(password_verify($old_password,$current_password)){
+  $sql = "UPDATE user SET password = ? WHERE username= ? AND password= ? AND isAdmin=0";  
   if($stmt = mysqli_prepare($conn, $sql)){ 
     mysqli_stmt_bind_param($stmt, "sss", $param_password, $param_name,$param_old_password);
     $param_password = password_hash($new_password, PASSWORD_DEFAULT);
     $param_name = $_SESSION["username"];
     $param_old_password= $current_password;
-    if(password_verify($old_password,$param_old_password)){
-        if(mysqli_stmt_execute($stmt)){
-          unset($_SESSION["loggedin"],$_SESSION["username"]);
-          echo"success";
-          exit();
-        } else{
-            echo "Oops! Something went wrong. Please try again later.";
-            exit();
-        }
-    }
+    if(mysqli_stmt_execute($stmt)){
+      unset($_SESSION["loggedin"],$_SESSION["username"]);
+      echo"success";
+      exit();
+    } 
     else{
-      echo"error";
+      echo "user_error";
       exit();
     }
     mysqli_stmt_close($stmt);
   }
+}
+else{
+  mysqli_close($conn);
+  echo"error";
+  exit();
+}
+
 mysqli_close($conn);
 ?>

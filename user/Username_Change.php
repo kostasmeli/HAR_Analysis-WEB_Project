@@ -21,30 +21,31 @@ if($stmt_user = mysqli_prepare($conn,$sql)){
   }    
   mysqli_stmt_close($stmt_user);
 }    
-
 //κανε update το username  αν οι κωδικοί ταιριάζουν
-$sql = "UPDATE user SET username= ? WHERE username= ? AND password= ?  AND isAdmin=0";  
+if(password_verify($password,$current_password)){
+  $sql = "UPDATE user SET username= ? WHERE username= ? AND password= ?  AND isAdmin=0";  
   if($stmt = mysqli_prepare($conn, $sql)){ 
     mysqli_stmt_bind_param($stmt,"sss",$param_new_username,$param_old_username,$param_password);
     $param_new_username = $new_username;
     $param_old_username = $_SESSION["username"];
-    $param_password = password_hash($password, PASSWORD_DEFAULT);
-    if(password_verify($password,$current_password)){
-        if(mysqli_stmt_execute($stmt)){
-          unset($_SESSION["loggedin"],$_SESSION["username"]);
-          echo"success";
-          exit();
-        } 
-        else{
-            echo "error_username";
-            exit();
-        }
-    }
+    $param_password = $current_password;
+    if(mysqli_stmt_execute($stmt)){
+      unset($_SESSION["loggedin"],$_SESSION["username"]);
+      echo"success";
+      exit();
+    } 
     else{
-      echo"error";
+      echo "error_username";
       exit();
     }
     mysqli_stmt_close($stmt);
   }
+}
+else{
+  mysqli_close($conn);
+  echo"error";
+  exit();
+}
+
 mysqli_close($conn);
 ?>
