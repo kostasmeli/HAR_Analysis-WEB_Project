@@ -1,0 +1,8 @@
+Geolocation API
+https://www.w3schools.com/html/html5_geolocation.asp - HTML
+https://www.w3.org/TR/2013/REC-geolocation-API-20131024/ - Σχετικά Παλιό
+https://en.wikipedia.org/wiki/W3C_Geolocation_API - Δεν ξέρω αν θα δουλέψει. Είναι wikipedia, αλλά έχει js
+
+Heatmap
+https://developers.google.com/maps/documentation/javascript/heatmaplayer - Είναι μέσω google maps
+https://github.com/heremaps/examples/tree/master/maps_api_for_javascript/demos/flickr-heat-map - Μπορεί να βοηθήσει αυτό
