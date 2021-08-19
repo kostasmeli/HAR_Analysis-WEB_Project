@@ -116,7 +116,7 @@ button.addEventListener("click",function(e){
      async function upload(json_entries) {
        temp=await userloc();
        json_entries.uploader={};
-       json_entries.uploader.date_upload=new Date().toLocaleDateString;
+       json_entries.uploader.date_upload=new Date().toLocaleDateString();
        json_entries.uploader.provider=temp.provider;
        json_entries.uploader.geolocation=temp.glocation;
        json_entries.uploader.city=temp.city;
@@ -181,8 +181,7 @@ button.addEventListener("click",function(e){
         download("filtered_file.har", data);
        });
        upbtn.addEventListener("click",function (){
-        var test= upload(json_entries);
-        console.log(test);
+        upload(json_entries).then(data=>{console.log(data);})
        });
       document.getElementById("downloadbutton").appendChild(btn);
       document.getElementById("uploadbutton").appendChild(upbtn);
