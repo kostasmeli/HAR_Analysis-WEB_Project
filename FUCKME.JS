@@ -181,7 +181,22 @@ button.addEventListener("click",function(e){
         download("filtered_file.har", data);
        });
        upbtn.addEventListener("click",function (){
-        upload(json_entries).then(data=>{console.log(data);})
+        console.log("fetch info");
+        upload(json_entries).then(data=>{console.log(data);
+         var har=data;
+        console.log("fetch completed");
+        request=$.ajax({
+          type: "POST",
+          url:"Upload_har.php",
+          data:{har:JSON.stringify(data)}
+        });
+        request.done(function(response,TextStatus,jqXHR){
+          if(response=="success"){
+            console.log("data uploaded");
+          }
+        });
+        
+        })
        });
       document.getElementById("downloadbutton").appendChild(btn);
       document.getElementById("uploadbutton").appendChild(upbtn);
