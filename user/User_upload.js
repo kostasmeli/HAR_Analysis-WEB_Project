@@ -1,24 +1,28 @@
-
 const button=document.querySelector('input[id="sbutton"]');
+$("#formFile").change(function(){
+  $("#dbutton").remove();
+  $("#upbutton").remove();
+})
 button.addEventListener("click",function(e){
   const reader = new FileReader();
   input=document.querySelector('input[id="formFile"]');
   reader.readAsText(input.files[0]);
-  reader.onload=function(){
+  reader.onload=getText;
+  async function getText(e){
     tmp=this.result;
     d1=JSON.parse(tmp);
     maxiter=d1.log.entries.length;
     var entries_array=new Array();
     for(let i=0; i<maxiter; i++){
       let entry={};
-      entry["serverIPAddress"]=d1.log.entries[i].serverIPAddress;
+      entry["serverIPAddress"]=d1.log.entries[i].serverIPAddress.replace("[","").replace("]","");
       entry["startedDateTime"]=d1.log.entries[i].startedDateTime.replace("[","").replace("]","");
       entry["timings"]={};
       entry["timings"]["wait"]=d1.log.entries[i].timings.wait;
       //Request 
       entry["request"]={};
       entry["request"]["method"]=d1.log.entries[i].request.method;
-      entry["request"]["url"]=d1.log.entries[i].request.url.match(/(?:[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?\.)+[a-z0-9][a-z0-9-]{0,61}[a-z0-9]/).replace("[",'').replace("]","");
+      entry["request"]["url"]=d1.log.entries[i].request.url.match(/(?:[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?\.)+[a-z0-9][a-z0-9-]{0,61}[a-z0-9]/);
       //Request Headers
       entry["request"]["headers"]={};
       if(d1.log.entries[i].request.headers.some(element=>element.name.toLowerCase()==="content-type")){
@@ -113,86 +117,96 @@ button.addEventListener("click",function(e){
      }
      console.log(entries_array);
      json_entries={entries_array};
-     function upload(json_entries){
-  
+     var json_download=JSON.parse(JSON.stringify(json_entries));
+     async function upload(json_entries) {
+       temp=await userloc();
+       json_entries.uploader={};
+       json_entries.uploader.date_upload=new Date().toLocaleDateString();
+       json_entries.uploader.provider=temp.provider;
+       json_entries.uploader.geolocation=temp.glocation;
+       json_entries.uploader.city=temp.city;
+       
+
       for(let i=0; i<json_entries.entries_array.length; i++){
         //μορφοποιήσε τα entries_array του json_entries για να σταλθεί στην βαση
         json_entries.entries_array[i].data_date=json_entries.entries_array[i].startedDateTime.replace(/([a-zA-Z])/g, ' ').replace(/^\s+|\s+$/g, "").split(' ')[0];
-        json_entries.entries_array[i].uploader={};
-        json_entries.entries_array[i].uploader.date_upload=new Date().toLocaleDateString;
-        json_entries.entries_array[i].uploader.
-        var tester={
-          //date_upload=new Date().toLocaleDateString(),
-          startedDateTime=json_entries.entries_array[i].startedDateTime,
-          wait=json_entries.entries_array[i].timings.wait,
-          serverIPAddress=json_entries.entries_array[i].serverIPAddress,
-          method=json_entries.entries_array[i].request.method,
-          //domain=json_entries.entries_array[i].request.url.replace("[",'').replace("]",""),
-          status=json_entries.entries_array[i].response.status,
-          statusText=json_entries.entries_array[i].response.statusText,
-          req_content_type=json_entries.entries_array[i].request.headers.content_type,
-          req_cache_control=json_entries.entries_array[i].request.headers.cache_control,
-          resp_content_type=json_entries.entries_array[i].response.headers.content_type,
-          resp_cache_control=json_entries.entries_array[i].response.headers.cache_control,
-          req_pragma=json_entries.entries_array[i].request.headers.pragma,
-          resp_pragma=json_entries.entries_array[i].response.headers.pragma,
-          expires=json_entries.entries_array[i].response.expires,
-          age=json_entries.entries_array[i].response.age,
-          last_modified=json_entries.entries_array[i].response.headers.last-last_modified,
-          host=json_entries.entries_array[i].request.headers.host,
-          //data_date=json_entries.entries_array[i].startedDateTime.replace(/([a-zA-Z])/g, ' ').replace(/^\s+|\s+$/g, "").split(' ')[0],
-          paroxos= ,
-          geoloc= ,
-          server_loc=,
-          dataid=i,
-        }
+        json_entries.entries_array[i].server_gloc= await getgeoloc(json_entries.entries_array[i].serverIPAddress);
+        json_entries.entries_array[i].data_id=i;
       }
-      function getgeoloc(){
-
-      };
-       function userloc(){
-        fetch('https://ipapi.co/json/')
-        .then(function(response) {
-          response.json().then(jsonData => {
-            console.log(jsonData);
-          });
-        })
-        .catch(function(error) {
-          console.log(error)
-        });
-      };
-     };
+       async function getgeoloc(serverip){
+         freegoip="https://freegeoip.app/json/"+serverip;
+         sip="https://ipapi.co/" + serverip + "/json";
+         let loc= await fetch (freegoip).then(response => response.json());
+         latitude=loc.latitude;
+         longitude=loc.longitude;
+         server_gloc=latitude+","+longitude;
+         return server_gloc;
+       }
+       async function userloc(){
+        let [loc, dns] = await Promise.all([
+          fetch('https://ipapi.co/json/').then(response => response.json()),
+          fetch('http://edns.ip-api.com/json').then(response => response.json())]);
+          latitude=loc.latitude;
+          longitude=loc.longitude;
+          glocation=latitude+","+longitude;
+          city=loc.city;
+          provider=dns.dns.geo;
+          var info={};
+          info.glocation=glocation;
+          info.city=city;
+          info.provider=provider;
+          return info;
+       }
+       return json_entries;
+     }
      if(!document.querySelector('input[id="dbutton"]')){
-     let upbtn = document.createElement("input");
-      upbtn.className ="btn btn-secondary";
-      upbtn.type="submit";
-      upbtn.id="upbutton";
-      upbtn.value="Upload to Server";
-     let btn = document.createElement("input");
-      btn.className = "btn btn-success";
-      btn.type = "submit";
-      btn.id = "dbutton";
-      btn.value= "Download";
-      function download(filename, text) {
-        var element = document.createElement('a');
-        element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
-        element.setAttribute('download', filename);
-    
-        element.style.display = 'none';
-        document.body.appendChild(element);
-    
-        element.click();
-    
-        document.body.removeChild(element);
-      }
-      btn.addEventListener("click", function () {
-        data=JSON.stringify(json_entries,null,"\t");
-       download("filtered_file.har", data);
-      });
-      //upbtn.addEventListener("click",upload());
-     document.getElementById("downloadbutton").appendChild(btn);
-     document.getElementById("uploadbutton").appendChild(upbtn);
-    
-    }
+      let upbtn = document.createElement("input");
+       upbtn.className ="btn btn-danger";
+       upbtn.type="submit";
+       upbtn.id="upbutton";
+       upbtn.value="Upload to Server";
+      let btn = document.createElement("input");
+       btn.className = "btn btn-light";
+       btn.type = "submit";
+       btn.id = "dbutton";
+       btn.value= "Download";
+       function download(filename, text) {
+         var element = document.createElement('a');
+         element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
+         element.setAttribute('download', filename);
+     
+         element.style.display = 'none';
+         document.body.appendChild(element);
+     
+         element.click();
+     
+         document.body.removeChild(element);
+       }
+       btn.addEventListener("click", function () {
+         data=JSON.stringify(json_download,null,"\t");
+        download("filtered_file.har", data);
+       });
+       upbtn.addEventListener("click",function (){
+        console.log("fetch info");
+        upload(json_entries).then(data=>{console.log(data);
+         var har=data;
+        console.log("fetch completed");
+        request=$.ajax({
+          type: "POST",
+          url:"Upload_har.php",
+          data:{har:JSON.stringify(data)}
+        });
+        request.done(function(response,TextStatus,jqXHR){
+          if(response=="success"){
+            console.log("data uploaded");
+          }
+        });
+        
+        })
+       });
+      document.getElementById("downloadbutton").appendChild(btn);
+      document.getElementById("uploadbutton").appendChild(upbtn);
+     
+     }
   }
-},false)
+},false);
