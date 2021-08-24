@@ -20,7 +20,7 @@ if($stmt_user = mysqli_prepare($conn,$sql)){
           session_start();
           // Store data in session variables
             $_SESSION["loggedin"] = true;
-            $_SESSION["username"] = $username;                             
+            $_SESSION["username"] = $username;                         
             echo"success";
             exit;
           }

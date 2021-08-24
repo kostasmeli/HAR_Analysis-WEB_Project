@@ -22,7 +22,8 @@ button.addEventListener("click",function(e){
       //Request 
       entry["request"]={};
       entry["request"]["method"]=d1.log.entries[i].request.method;
-      entry["request"]["url"]=d1.log.entries[i].request.url.match(/(?:[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?\.)+[a-z0-9][a-z0-9-]{0,61}[a-z0-9]/);
+      tempurl= new URL(d1.log.entries[i].request.url.toString());
+      entry["request"]["url"]=tempurl.hostname;
       //Request Headers
       entry["request"]["headers"]={};
       if(d1.log.entries[i].request.headers.some(element=>element.name.toLowerCase()==="content-type")){
@@ -126,19 +127,27 @@ button.addEventListener("click",function(e){
        json_entries.uploader.geolocation=temp.glocation;
        json_entries.uploader.city=temp.city;
        
+      const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
 
       for(let i=0; i<json_entries.entries_array.length; i++){
+        
         //μορφοποιήσε τα entries_array του json_entries για να σταλθεί στην βαση
         json_entries.entries_array[i].data_date=json_entries.entries_array[i].startedDateTime.replace(/([a-zA-Z])/g, ' ').replace(/^\s+|\s+$/g, "").split(' ')[0];
         json_entries.entries_array[i].server_gloc= await getgeoloc(json_entries.entries_array[i].serverIPAddress);
         json_entries.entries_array[i].data_id=i;
       }
+
+
        async function getgeoloc(serverip){
-         freegoip="https://freegeoip.app/json/"+serverip;
-         sip="https://ipapi.co/" + serverip + "/json";
-         let loc= await fetch (freegoip).then(response => response.json());
-         latitude=loc.latitude;
-         longitude=loc.longitude;
+        sleep(30000);
+        // freegoip="https://freegeoip.app/json/"+serverip;
+        // sip="https://ipapi.co/" + serverip + "/json";
+        // ipdata="https://api.ipdata.co/"+serverip+"?api-key=788efec831a52b60863709fdae17ff55503cafaa099ecfec07d0501e";
+        // ip_api="http://ip-api.com/json/"+serverip;
+         ipregistry="https://api.ipregistry.co/"+serverip+"?key=ma9y9i0z36h11iec"
+         let loc= await fetch (ipregistry).then(response => response.json());
+         latitude=loc.location.latitude;
+         longitude=loc.location.longitude;
          server_gloc=latitude+","+longitude;
          return server_gloc;
        }

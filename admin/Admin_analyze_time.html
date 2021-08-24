@@ -1,16 +1,26 @@
 <!DOCTYPE html>
 <head>
-  <title>Αρχική Σελίδα Διαχειριστή</title>
+  <title>Ανάλυση χρόνων απόκρισης σε αιτήσεις</title>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@3.5.1/dist/chart.min.js"></script>
   <script src="sessionkill_admin.js" charset="utf-8"></script>
   <script src="session_admin_check.js" charset="utf-8"></script>
+  <script src="analyze_times.js" charset="utf-8"></script>
   <style>
     body{
       height: 100vh;
-      background-color: #0093E9;
+      
       background-image: linear-gradient(160deg, #0093E9 0%, #80D0C7 100%);
+    }
+    .my-custom-scrollbar {
+      position: relative;
+      height: 580px;
+      overflow: auto;
+    }
+    .table-wrapper-scroll-y {
+    display: block;
     }
   </style>
 </head>
@@ -21,13 +31,13 @@
       <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav">
           <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="Admin_Index.html">Αρχική Σελίδα</a>
+            <a class="nav-link "  href="Admin_Index.html">Αρχική Σελίδα</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="Admin_basic_info.html">Απεικόνιση Βασικών Πληροφοριών</a>
+            <a class="nav-link"  href="Admin_basic_info.html">Απεικόνιση Βασικών Πληροφοριών</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">Ανάλυση χρόνων απόκρισης σε αιτήσεις</a>
+            <a class="nav-link active" aria-current="page" href="Admin_analyze_time.html">Ανάλυση χρόνων απόκρισης σε αιτήσεις</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="#">Ανάλυση κεφαλίδων HTTP</a>
@@ -40,6 +50,9 @@
       <button class="btn btn-danger navbar-btn" id="logout_btn">Αποσύνδεση</button>
     </div>
   </nav>
+  <div class="container-fluid justify-content-center mt-2">
+
+  </div>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
 </body>
 <footer>
