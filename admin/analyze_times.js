@@ -5,101 +5,129 @@ $(function(){
     dataType:"json"
   });
   request.done(function(response,textStatus,jqXHR){
-    function countDuplicates(obj, num){
-      obj[num] = (++obj[num] || 1);
-      return obj;
+    
+    console.log(response);
+    var monday= $.map(response[1],function(o){
+      if (o.weekday==="Monday")
+      {return {avgwait:o.avgwait,hour:o.hour}
     }
-    var d = new Date();
-    var weekday = new Array(7);
-    weekday[0] = "Sunday";
-    weekday[1] = "Monday";
-    weekday[2] = "Tuesday";
-    weekday[3] = "Wednesday";
-    weekday[4] = "Thursday";
-    weekday[5] = "Friday";
-    weekday[6] = "Saturday";
-
-    var numberofhar=response.length;
-    var har_array=[];
-    for(i=0; i<numberofhar; i++){
-      har_array.push(JSON.parse(response[i].har));
-    }
-
-
-    var array_content_hour_timing=[];
-    var array_day_hour_wait=[];
-    numberofhars =har_array.length;
-
-
-    for(i=0; i<numberofhars; i++){
-      let entries_length=har_array[i].entries_array.length;
-      for(x=0; x<entries_length; x++){
-        let tempdate=new Date(har_array[i].entries_array[x].startedDateTime.replace("T"," ").replace("Z"," "))
-        temp_value_a={
-          content_type:har_array[i].entries_array[x].response.headers["content-type"],
-          wait:har_array[i].entries_array[x].timings.wait,
-          hour:tempdate.getHours()
-        };
-        temp_value_b={ 
-          day:weekday[tempdate.getDay()],
-          wait:har_array[i].entries_array[x].timings.wait,
-          hour:tempdate.getHours()
-        }
-        array_content_hour_timing.push(temp_value_a);
-        array_day_hour_wait.push(temp_value_b);
+    })
+    var tuesday=$.map(response[1],function(o){
+      if(o.weekday==="Tuesday"){
+        return{avgwait:o.avgwait,hour:o.hour}
       }
-    }
-    console.log(array_day_hour_wait);
-    var time_array=$.map(array_content_hour_timing,function(o){return o.hour});
-    var time_occur=time_array.reduce(countDuplicates,{});
-    console.log(time_occur) //json with key=hour & value=occurrence 
-   
-    var result=[];
-    array_content_hour_timing.reduce(function(res, value) {
-      if (!res[value.hour]) {
-        res[value.hour] = { hour: value.hour, wait: 0 };
-        result.push(res[value.hour])
+    })
+    var wednesday=$.map(response[1],function(o){
+      if(o.weekday==="Wednesday"){
+        return{avgwait:o.avgwait,hour:o.hour}
       }
-      res[value.hour].wait += value.wait;
-      return res;
-    }, {});
+    })
+    var thursday=$.map(response[1],function(o){
+      if(o.weekday==="Thursday"){
+        return{avgwait:o.avgwait,hour:o.hour}
+      }
+    })
+    var friday=$.map(response[1],function(o){
+      if(o.weekday==="Friday"){
+        return{avgwait:o.avgwait,hour:o.hour}
+      }
+    })
+    var saturday=$.map(response[1],function(o){
+      if(o.weekday==="Saturday"){
+        return{avgwait:o.avgwait,hour:o.hour}
+      }
+    })
+    var sunday=$.map(response[1],function(o){
+      if(o.weekday==="Sunday"){
+        return{avgwait:o.avgwait,hour:o.hour}
+      }
+    })
 
-    console.log(result)
-    for(i=0; i<result.length; i++){
-      result[i]["mean_wait"]=Math.floor((result[i].wait/time_occur[result[i].hour]));
-    }
-
-    var ctx = $('#myChart');
-    var myChart = new Chart(ctx, {
+    var ctx2 = $('#myChart2');
+    var myChart2 = new Chart(ctx2, {
       type: 'bar',
       data: {
           labels: [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23],
-          datasets: [{
-              label: 'όλες οι αιτήσεις',
-              data: result,
-              parsing: {
-                xAxisKey: 'hour',
-                yAxisKey: 'mean_wait'
+          datasets: [
+          {
+            label:"Δευτέρα",
+            data:monday,
+            parsing:{
+              xAxisKey: "hour",
+              yAxisKey: "avgwait"
             },
-              backgroundColor: [
-                  'rgba(255, 99, 132, 0.2)',
-                  'rgba(54, 162, 235, 0.2)',
-                  'rgba(255, 206, 86, 0.2)',
-                  'rgba(75, 192, 192, 0.2)',
-                  'rgba(153, 102, 255, 0.2)',
-                  'rgba(255, 159, 64, 0.2)'
-              ],
-              borderColor: [
-                  'rgba(255, 99, 132, 1)',
-                  'rgba(54, 162, 235, 1)',
-                  'rgba(255, 206, 86, 1)',
-                  'rgba(75, 192, 192, 1)',
-                  'rgba(153, 102, 255, 1)',
-                  'rgba(255, 159, 64, 1)'
-              ],
-              borderWidth: 1
-          }]
-      },
+            borderColor:'rgba(233, 62, 62, 0.2)',
+            backgroundColor:'rgba(233, 62, 62, 0.2)',
+            borderWidth:1
+          },{
+            label:"Τρίτη",
+            data:tuesday,
+            parsing:{
+              xAxisKey: "hour",
+              yAxisKey: "avgwait"
+            },
+            borderColor:'rgba(62, 233, 90, 0.2)',
+            backgroundColor:'rgba(62, 233, 90, 0.2)',
+            borderWidth:1
+          },
+          {
+            label:"Τεταρτη",
+            data:wednesday,
+            parsing:{
+              xAxisKey: "hour",
+              yAxisKey: "avgwait"
+            },
+            borderColor:'rgba(62, 165, 233, 0.2)',
+            backgroundColor:'rgba(62, 165, 233, 0.2)',
+            borderWidth:1
+          },
+          {
+            label:"Πέμπτη",
+            data:thursday,
+            parsing:{
+              xAxisKey: "hour",
+              yAxisKey: "avgwait"
+            },
+            borderColor:'rgba(233, 130, 62, 0.2)',
+            backgroundColor:'rgba(233, 130, 62, 0.2)',
+            borderWidth:1
+          },
+          {
+            label:"Παρασκευή",
+            data:friday,
+            parsing:{
+              xAxisKey: "hour",
+              yAxisKey: "avgwait"
+            },
+            borderColor:'rgba(232, 222, 118, 0.2)',
+            backgroundColor:'rgba(232, 222, 118, 0.2)',
+            borderWidth:1
+          },
+          {
+            label:"Σαββατο",
+            data:saturday,
+            parsing:{
+              xAxisKey: "hour",
+              yAxisKey: "avgwait"
+            },
+            borderColor:'rgba(214, 118, 233, 0.2)',
+            backgroundColor:'rgba(214, 118, 233, 0.2)',
+            borderWidth:1
+          },
+          {
+            label:"Κυριακή",
+            data:sunday,
+            parsing:{
+              xAxisKey: "hour",
+              yAxisKey: "avgwait"
+            },
+            borderColor:'rgba(116, 79, 16, 0.2)',
+            backgroundColor:'rgba(116, 79, 16, 0.2)',
+            borderWidth:1
+          }
+        ]
+      }
+      ,
       options: {
           responsive: true,
           maintainAspectRatio:false,
@@ -109,7 +137,7 @@ $(function(){
             },
             title:{
               display:true,
-              text:'Μέσο χρόνο απόκρισης σε κάθε αίτηση ανά ώρα της ημέρας'
+              text:'Μέσο χρόνο απόκρισης  ανά ώρα της ημέρας(b)'
             }
           },
           scales: {
@@ -119,5 +147,141 @@ $(function(){
           }
       }
   });
+  var ctx=$("#myChart");
+  var mychart=new Chart(ctx,{
+    type:"bar",
+    data: {
+      labels: [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23],
+      datasets: [{
+          label: 'Όλα τα είδη ιστοαντικειμένου',
+          data:response[0] ,
+          parsing: {
+            xAxisKey: 'hour',
+            yAxisKey: 'avgwait'
+        },
+          borderWidth: 1
+      }],
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio:false,
+    plugins:{
+      legend:{
+        position:'top',
+      },
+      title:{
+        display:true,
+        text:'Μέσο χρόνο απόκρισης  ανά ώρα της ημέρας(a)'
+      }
+    },
+    scales: {
+        y: {
+            beginAtZero: true
+        }
+    }
+  }
+  });
+  var get=$.map(response[2],function(o){
+    if(o.method==="GET"){
+      return{avgwait:o.avgwait,hour:o.hour}
+    }
+  })
+  var post=$.map(response[2],function(o){
+    if(o.method==="POST"){
+      return{avgwait:o.avgwait,hour:o.hour}
+    }
+  })
+  var ctx3=$("#myChart3");
+  var mychart3=new Chart(ctx3,{
+    type:"bar",
+    data: {
+      labels: [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23],
+      datasets: [{
+          label: 'POST',
+          data:post ,
+          parsing: {
+            xAxisKey: 'hour',
+            yAxisKey: 'avgwait'
+        },
+          borderColor:'rgba(233, 62, 62, 0.2)',
+          backgroundColor:'rgba(233, 62, 62, 0.2)',
+          borderWidth: 1
+      },{
+        label: 'GET',
+        data:get ,
+        parsing: {
+          xAxisKey: 'hour',
+          yAxisKey: 'avgwait'
+      },
+        borderColor:'rgba(62, 233, 90, 0.2)',
+        backgroundColor:'rgba(62, 233, 90, 0.2)',
+        borderWidth: 1
+    }
+    ],
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio:false,
+    plugins:{
+      legend:{
+        position:'top',
+      },
+      title:{
+        display:true,
+        text:'Μέσο χρόνο απόκρισης  ανά ώρα της ημέρας(c)'
+      }
+    },
+    scales: {
+        y: {
+            beginAtZero: true
+        }
+    }
+  }
+  });
+  var cosmote= $.map(response[3],function(o){
+    if(o.uploader_provider==="Greece - OTEnet"){
+      return {avgwait:o.avgwait,hour:o.hour}
+    }
+  })
+  var ctx4=$("#myChart4");
+  var mychart4=new Chart(ctx4,{
+    type:"bar",
+    data: {
+      labels: [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23],
+      datasets: [{
+          label: 'Cosmote',
+          data:cosmote ,
+          parsing: {
+            xAxisKey: 'hour',
+            yAxisKey: 'avgwait'
+        },
+          borderColor:'rgba(62, 165, 233, 0.2)',
+          backgroundColor:'rgba(62, 165, 233, 0.2)',
+          borderWidth: 1
+      }
+    ],
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio:false,
+    plugins:{
+      legend:{
+        position:'top',
+      },
+      title:{
+        display:true,
+        text:'Μέσο χρόνο απόκρισης  ανά ώρα της ημέρας(d)'
+      }
+    },
+    scales: {
+        y: {
+            beginAtZero: true
+        }
+    }
+  }
+  });
+
+
+
   });
 });

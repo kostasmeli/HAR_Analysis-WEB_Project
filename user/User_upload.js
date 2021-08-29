@@ -9,6 +9,14 @@ button.addEventListener("click",function(e){
   reader.readAsText(input.files[0]);
   reader.onload=getText;
   async function getText(e){
+    var weekday = new Array(7);
+    weekday[0] = "Sunday";
+    weekday[1] = "Monday";
+    weekday[2] = "Tuesday";
+    weekday[3] = "Wednesday";
+    weekday[4] = "Thursday";
+    weekday[5] = "Friday";
+    weekday[6] = "Saturday";
     tmp=this.result;
     d1=JSON.parse(tmp);
     maxiter=d1.log.entries.length;
@@ -23,7 +31,7 @@ button.addEventListener("click",function(e){
       entry["request"]={};
       entry["request"]["method"]=d1.log.entries[i].request.method;
       tempurl= new URL(d1.log.entries[i].request.url.toString());
-      entry["request"]["url"]=tempurl.hostname;
+      entry["request"]["url"]=tempurl.hostname.replace('www.','');;
       //Request Headers
       entry["request"]["headers"]={};
       if(d1.log.entries[i].request.headers.some(element=>element.name.toLowerCase()==="content-type")){
@@ -127,24 +135,26 @@ button.addEventListener("click",function(e){
        json_entries.uploader.geolocation=temp.glocation;
        json_entries.uploader.city=temp.city;
        
-      const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
+      
 
       for(let i=0; i<json_entries.entries_array.length; i++){
         
         //μορφοποιήσε τα entries_array του json_entries για να σταλθεί στην βαση
-        json_entries.entries_array[i].data_date=json_entries.entries_array[i].startedDateTime.replace(/([a-zA-Z])/g, ' ').replace(/^\s+|\s+$/g, "").split(' ')[0];
+        json_entries.entries_array[i].startedDateTime=json_entries.entries_array[i].startedDateTime.replace("T",' ').replace("Z", " ");
         json_entries.entries_array[i].server_gloc= await getgeoloc(json_entries.entries_array[i].serverIPAddress);
         json_entries.entries_array[i].data_id=i;
+        let date=new Date(json_entries.entries_array[i].startedDateTime);
+        json_entries.entries_array[i].weekday=weekday[date.getDay()];
       }
 
 
        async function getgeoloc(serverip){
-        sleep(30000);
-        // freegoip="https://freegeoip.app/json/"+serverip;
+        
+        //freegoip="https://freegeoip.app/json/"+serverip;
         // sip="https://ipapi.co/" + serverip + "/json";
         // ipdata="https://api.ipdata.co/"+serverip+"?api-key=788efec831a52b60863709fdae17ff55503cafaa099ecfec07d0501e";
         // ip_api="http://ip-api.com/json/"+serverip;
-         ipregistry="https://api.ipregistry.co/"+serverip+"?key=ma9y9i0z36h11iec"
+         ipregistry="https://api.ipregistry.co/"+serverip+"?key=ls484pzb1hy72ef9"
          let loc= await fetch (ipregistry).then(response => response.json());
          latitude=loc.location.latitude;
          longitude=loc.location.longitude;
@@ -197,17 +207,24 @@ button.addEventListener("click",function(e){
        });
        upbtn.addEventListener("click",function (){
         console.log("fetch info");
+        $("#loading_text").text("Currently Uploading,Please Wait");
         upload(json_entries).then(data=>{console.log(data);
          var har=data;
         console.log("fetch completed");
         request=$.ajax({
           type: "POST",
-          url:"Upload_har.php",
-          data:{har:JSON.stringify(data)}
+          url:"test.php",
+          data:JSON.stringify(data)
         });
         request.done(function(response,TextStatus,jqXHR){
           if(response=="success"){
+            $("#loading_text").text("Successfully Uploaded");
             console.log("data uploaded");
+            setTimeout( function(){$("#loading_text").text("")},5*1000);
+          }
+          else{
+            $("#loading_text").text("Error Occurred,Please Try Again");
+            setTimeout( function(){$("#loading_text").text("")},5*1000);
           }
         });
         
