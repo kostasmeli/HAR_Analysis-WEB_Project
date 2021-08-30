@@ -4,7 +4,7 @@ require_once(__ROOT__.'/config.php');
 header('Content-Type: application/json');
 
 $result=[];
-$sql="SELECT avg(wait) as avgwait,HOUR(startedDateTime) as hour from harentries group by HOUR(startedDateTime)";
+$sql="SELECT response_content_type,avg(wait) as avgwait,HOUR(startedDateTime) as hour from harentries group by HOUR(startedDateTime),response_content_type";
 $stmt=$conn->prepare($sql);
 $stmt->execute();
 $res=$stmt->get_result()->fetch_all(MYSQLI_ASSOC);
