@@ -13,9 +13,9 @@ $result = $stmt->get_result();
 $user_array = $result->fetch_assoc(); 
 $userid=$user_array["User_id"];
 
-$sql="SELECT files_uploaded FROM user  WHERE username =? ";
+$sql="SELECT count(entry_id) as files_uploaded from harentries where uploader=? AND entry_id=0";
 $stmt= $conn->prepare($sql);
-$stmt->bind_param("s",$username);
+$stmt->bind_param("i",$userid);
 $stmt->execute();
 $result= $stmt->get_result();
 $result_arr=$result->fetch_assoc();
