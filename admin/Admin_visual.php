@@ -18,7 +18,7 @@ $stmt->execute();
 $res=$stmt->get_result()->fetch_all(MYSQLI_ASSOC);
 $result[]=$res;
 
-$sql="SELECT uploader_lat_long,server_lat_long as loc ,COUNT(server_lat_long) as count FROM harentries GROUP BY server_lat_long,uploader";
+$sql="SELECT uploader_lat_long,server_lat_long as loc ,COUNT(server_lat_long) as count FROM harentries GROUP BY server_lat_long,uploader_lat_long";
 $stmt= $conn->prepare($sql);
 $stmt->execute();
 $res=$stmt->get_result()->fetch_all(MYSQLI_ASSOC);
