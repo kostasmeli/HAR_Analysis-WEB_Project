@@ -49,10 +49,7 @@ for ($i=0; $i<$maxiter; $i++){
   $stmt->execute();
 
 }
-$update="UPDATE user SET files_uploaded=files_uploaded+1 WHERE User_id=?";
-$stmt2=$conn->prepare($update);
-$stmt2->bind_param("i", $userid);
-$stmt2->execute();
+
 echo "success";
 
 ?>

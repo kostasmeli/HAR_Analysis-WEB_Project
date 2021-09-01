@@ -1,7 +1,7 @@
 $(function () {
   request=$.ajax({
     type:"GET",
-    url:"User_visual2.php",
+    url:"User_visual.php",
     dataType:"json"
   });
 
