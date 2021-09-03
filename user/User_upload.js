@@ -87,7 +87,7 @@ button.addEventListener("click",function(e){
           }else{
             entry["response"]["headers"]["content-type"]=index.value;
           }
-          console.log(entry["response"]["headers"]["content-type"]);
+          
         }
         else
         {
