@@ -33,12 +33,17 @@ button.addEventListener("click",function(e){
         entry["request"]={};
         entry["request"]["method"]=d1.log.entries[i].request.method;
         tempurl= new URL(d1.log.entries[i].request.url.toString());
-        entry["request"]["url"]=tempurl.hostname.replace('www.','');;
+        entry["request"]["url"]=tempurl.hostname.replace('www.','');
         //Request Headers
         entry["request"]["headers"]={};
         if(d1.log.entries[i].request.headers.some(element=>element.name.toLowerCase()==="content-type")){
           let index= d1.log.entries[i].request.headers.find(element=>element.name.toLowerCase()=="content-type");
-          entry["request"]["headers"]["content-type"]=index.value;
+          temp_content=index.value.match(/[a-zA-Z0-9]*\/[a-zA-Z0-9+-.]*\;/);
+          if(temp_content){
+            entry["request"]["headers"]["content-type"]=temp_content[0].replace(";","");
+          }else{
+            entry["request"]["headers"]["content-type"]=index.value;
+          }
         }
         else
         {
@@ -76,7 +81,13 @@ button.addEventListener("click",function(e){
         entry["response"]["headers"]={};
         if(d1.log.entries[i].response.headers.some(element=>element.name.toLowerCase()==="content-type")){
           let index = d1.log.entries[i].response.headers.find(element=>element.name.toLowerCase()=="content-type");
-          entry["response"]["headers"]["content-type"]=index.value;
+          temp_content=index.value.match(/[a-zA-Z0-9]*\/[a-zA-Z0-9+-.]*\;/);
+          if(temp_content){
+            entry["response"]["headers"]["content-type"]=temp_content[0].replace(";","");
+          }else{
+            entry["response"]["headers"]["content-type"]=index.value;
+          }
+          console.log(entry["response"]["headers"]["content-type"]);
         }
         else
         {
@@ -148,7 +159,7 @@ button.addEventListener("click",function(e){
           let date=new Date(json_entries.entries_array[i].startedDateTime);
           json_entries.entries_array[i].weekday=weekday[date.getDay()];
         }
-  
+        
   
          async function getgeoloc(serverip){
           
@@ -235,6 +246,7 @@ button.addEventListener("click",function(e){
          });
         document.getElementById("downloadbutton").appendChild(btn);
         document.getElementById("uploadbutton").appendChild(upbtn);
+        
        
        }
     }
