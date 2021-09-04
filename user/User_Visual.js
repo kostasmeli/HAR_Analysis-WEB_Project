@@ -6,29 +6,18 @@ $(function () {
   });
 
   request.done(function(response,TextStatus,jqXHR){
-    var har_array=[];
-    for (i=0; i<response.length; i++){
-      har_array[i]=JSON.parse(response[i].har);
+    var maxiter=response.length;
+    var data=[];
+    for(let i=0; i<maxiter; i++){
+      let array=response[i].server_lat_long.split(",");
+      response[i].lat=parseFloat(array[0]);
+      response[i].lng=parseFloat(array[1]);
+      delete response[i].server_lat_long;
     }
-    var infoloc=[];
-
-    for (let x=0; x<har_array.length; x++){
-      for(let i=0; i<har_array[x].entries_array.length; i++){
-        let array = har_array[x].entries_array[i].server_gloc.split(',');
-        let temp={
-          lat:parseFloat(array[0]),
-          lng:parseFloat(array[1]),
-        }
-        infoloc.push(temp);
-      }
-    }
-    //console.log(infoloc);
+    console.log(response);
+    
 
 
-    var testData = {
-      max: 15,
-      data:infoloc
-    };
     var baseLayer=L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
       attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
       maxZoom: 18,
@@ -40,11 +29,11 @@ $(function () {
   var cfg = {
     "radius": 20,
     "maxOpacity": 0.8,
-    "scaleRadius": false,
+    "scaleRadius":false,
     "useLocalExtrema": false,
+    valueField: 'count',
     latField: 'lat',
     lngField: 'lng',
-    valueField: 'count'
   };
   let heatmapLayer= new HeatmapOverlay(cfg);
 
@@ -54,7 +43,7 @@ $(function () {
    layers:[baseLayer,heatmapLayer]
   });
 
-  heatmapLayer.setData(testData);
+  heatmapLayer.addData(response);
   })
 
   

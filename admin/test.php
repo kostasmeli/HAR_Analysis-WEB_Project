@@ -2,9 +2,13 @@
 define('__ROOT__', dirname(dirname(__FILE__)));
 require_once(__ROOT__.'/config.php');
 header('Content-Type: application/json');
-$sql="SELECT har FROM files";
+
+$result=[];
+$sql="SELECT DISTINCT(uploader_provider) as providers FROM harentries " ;
 $stmt=$conn->prepare($sql);
 $stmt->execute();
-$result=$stmt->get_result()->fetch_all(MYSQLI_ASSOC);
+$res=$stmt->get_result()->fetch_all(MYSQLI_ASSOC);
+$result[]=$res;
+
 echo json_encode($result);
 ?>
