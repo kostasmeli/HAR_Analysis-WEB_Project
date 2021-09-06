@@ -16,14 +16,15 @@ $(function(){
       request.done(function(response,textStatus,jqXHR){
         if(response=="success"){
           console.log("Password Changed");
-          $("#error_msg").text("Επιτυχής αλλαγή κωδικού πρόσβασης");
-          setTimeout( function(){$("#error_msg").text("");
+          string_alert='<div class="alert alert-success alert-dismissible fade show" role="alert">'+ '<strong>Success, </strong>Password Changed,Please log in again' +'<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>';
+          $("#alert_msg_password  ").empty().append(string_alert);
+          setTimeout( function(){
           window.location.href = "Login_User.html";
           },5*1000);
         }
         else if(response=="error"){
-          $("#error_msg").text("Λάθος υπάρχον κωδικός");
-          setTimeout( function(){$("#error_msg").text("")},5*1000);
+          string_alert='<div class="alert alert-danger alert-dismissible fade show" role="alert">'+ '<strong>Error, </strong>Password is wrong' +'<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>';
+          $("#alert_msg_password").empty().append(string_alert);
         }
       });
       request.fail(function (jqXHR, textStatus, errorThrown){
@@ -34,8 +35,8 @@ $(function(){
     });
   }
   else{
-    $("#error_msg").text("Λάθος επανάληψη νέου κωδικού");
-    setTimeout( function(){$("#error_msg").text("")},5*1000);
+    string_alert='<div class="alert alert-danger alert-dismissible fade show" role="alert">'+ '<strong>Error, </strong>Password repeat is wrong' +'<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>';
+    $("#alert_msg_password").empty().append(string_alert);
     $("#new_password").val("");
     $("#new_password_repeat").val("");
   }

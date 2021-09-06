@@ -12,15 +12,15 @@ $(function () {
      request.done(function(response,textStatus,jqXHR){
        if(response=="success"){
         console.log("You Registered the Admin")
-        $("#error_msg").text("Registered Successfully,You will be redirected to the login page")
+        string_alert='<div class="alert alert-success alert-dismissible fade show" role="alert">'+ '<strong>Registered Successfully,</strong>You will be redirected to the login page' +'<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>';
+        $("#alert_msg").empty().append(string_alert);
         setTimeout(function(){
-          $("#error_msg").text("");
           window.location.href = "Login_Admin.html";
          },5*1000);
        }
        else if (response=="error"){
-        $("#error_msg").text("Username already exists");
-        setTimeout( function(){$("#error_msg").text("")},5*1000);
+        string_alert='<div class="alert alert-danger alert-dismissible fade show" role="alert">'+ '<strong>Error</strong>, Username already exists' +'<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>';
+        $("#alert_msg").empty().append(string_alert);
        }
        else console.log(response)
      });
