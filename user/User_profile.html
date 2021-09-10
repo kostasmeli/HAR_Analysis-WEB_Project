@@ -84,9 +84,12 @@
               <div class="mt-3 px-3"> <input class="form-control" name="old_password" placeholder="Υπάρχον Κωδικός" type="password" id="old_password" required pattern="(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}"> </div>
               <div class="mt-3 px-3"> <input class="form-control" name="new_password" placeholder="Νέος Κωδικός" type="password" id="new_password" required pattern="(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}"> </div>
               <div class="mt-3 px-3"> <input class="form-control" name="new_password_repeat" placeholder="Επανάληψη Νέου Κωδικού"   type="password" id="new_password_repeat" required required pattern="(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}">
-                <span id="error_msg" style="color: black; font-weight:bold"></span>  </div>
+                  </div>
               <div class="mt-3 d-grid px-3">
                 <input type="submit" class="btn btn-primary btn-block btn-signup" id="password_button" value="Αλλαγή Κωδικού"></button>
+              </div>
+              <div class="container mt-2" id="alert_msg_password">
+
               </div>
             </form>
           </div>
@@ -100,9 +103,12 @@
           <div class="card-body">
             <form id="username_change">
               <div class="mt-3 px-3"> <input class="form-control" name="new_username" placeholder="Νέο Username" type="text" id="new_username" required> </div>
-              <div class="mt-3 px-3"> <input class="form-control" name="password" placeholder="Κωδικός Πρόσβασης" type="password" id="password" required pattern="(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}"> <span id="error_msg_username" style="color: black; font-weight:bold"></span> </div>
+              <div class="mt-3 px-3"> <input class="form-control" name="password" placeholder="Κωδικός Πρόσβασης" type="password" id="password" required pattern="(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}">  </div>
               <div class="mt-3 d-grid px-3">
                 <input type="submit" class="btn btn-primary btn-block btn-signup" id="username_button" value="Αλλαγή Username"></button>
+              </div>
+              <div class="container mt-2" id="alert_msg_username">
+
               </div>
              </form> 
           </div>

@@ -26,6 +26,6 @@ $(function (){
       let string="<tr><th>"+response[5][i].response_content_type+"</th>"+"<td>"+ parseFloat(response[5][i].avg_age).toFixed(2)+"</td></tr>";
       $("#3rdbody").append(string);
     }
-    
+    //Πόλη και πάροχος  απο την οποία ανέβασε τελευταία αρχείο 
   })
 });
