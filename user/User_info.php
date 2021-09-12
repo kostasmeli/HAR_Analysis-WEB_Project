@@ -29,6 +29,14 @@ $result= $stmt->get_result();
 $result_arr=$result->fetch_assoc();
 $js_array[]=$result_arr["date_uploaded"];
 $js_array[]=$username;
+
+ $sql="SELECT DISTINCT(filename),date_uploaded from harentries where uploader=?";
+ $stmt=$conn->prepare($sql);
+ $stmt->bind_param("i",$userid);
+ $stmt->execute();
+ $result= $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
+ $js_array[]=$result;
+
 echo json_encode($js_array);
 
 ?>

@@ -11,7 +11,7 @@ button.addEventListener("click",function(e){
     reader.readAsText(input.files[0])
     reader.onload=getText;
     async function getText(e){
-      //var filename = input.files[0].name;
+      var filename = input.files[0].name;
       var weekday = new Array(7);
       weekday[0] = "Sunday";
       weekday[1] = "Monday";
@@ -148,7 +148,7 @@ button.addEventListener("click",function(e){
          json_entries.uploader.provider=temp.provider;
          json_entries.uploader.geolocation=temp.glocation;
          json_entries.uploader.city=temp.city;
-        // json_entries.filename=filename;
+         json_entries.uploader.filename=filename;
          
         
   

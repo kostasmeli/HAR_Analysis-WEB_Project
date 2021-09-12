@@ -24,6 +24,14 @@
     #periexomena{
       margin-top: 20px;
     }
+    .my-custom-scrollbar {
+      position: relative;
+      height: 200px;
+      overflow: auto;
+    }
+    .table-wrapper-scroll-y {
+    display: block;
+    }
   </style>
 </head>
 <body>
@@ -71,6 +79,21 @@
           </tr>
         </tbody>
         </table>
+      </div>
+      <div class="col-5">
+        <div class="table-wrapper-scroll-y my-custom-scrollbar mb-2">
+        <table class="table table-light table-hover table-bordered ">
+          <thead>
+            <tr>
+              <th class="table-active">Αρχεία που έχουν γίνει Upload</th>
+              <td class="table-active"></td>
+            </tr>
+          </thead>
+          <tbody id="files">
+            
+          </tbody>
+        </table>
+        </div>
       </div>
     </div>
     <div class="row justify-content-center">
