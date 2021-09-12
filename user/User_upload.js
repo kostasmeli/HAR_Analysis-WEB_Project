@@ -169,7 +169,7 @@ button.addEventListener("click",function(e){
           // sip="https://ipapi.co/" + serverip + "/json";
           // ipdata="https://api.ipdata.co/"+serverip+"?api-key=788efec831a52b60863709fdae17ff55503cafaa099ecfec07d0501e";
           // ip_api="http://ip-api.com/json/"+serverip;
-           ipregistry="https://api.ipregistry.co/"+serverip+"?key=ls484pzb1hy72ef9"
+           ipregistry="https://api.ipregistry.co/"+serverip+"?key=ma9y9i0z36h11iec"
            let loc= await fetch (ipregistry).then(response => response.json());
            latitude=loc.location.latitude;
            longitude=loc.location.longitude;

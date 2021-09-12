@@ -30,7 +30,7 @@ $result_arr=$result->fetch_assoc();
 $js_array[]=$result_arr["date_uploaded"];
 $js_array[]=$username;
 
- $sql="SELECT DISTINCT(filename),date_uploaded from harentries where uploader=?";
+ $sql="SELECT filename,DATE(date_uploaded)as date_uploaded, max(entry_id)as entry_id from harentries where uploader=? group by filename ";
  $stmt=$conn->prepare($sql);
  $stmt->bind_param("i",$userid);
  $stmt->execute();
